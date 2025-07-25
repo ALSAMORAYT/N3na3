@@ -239,7 +239,15 @@ joinBtn.TextColor3 = Color3.new(1,1,1)
 joinBtn.AutoButtonColor = true
 
 joinBtn.MouseButton1Click:Connect(function()
-    print("فتح رابط القناة: https://t.me/Prov_development")
+    -- فتح الرابط في المتصفح (إذا دعمها المستخدم)
+    local HttpService = game:GetService("HttpService")
+    local success, result = pcall(function()
+        return game:GetService("TeleportService"):TeleportToPlaceInstance(0, "", player)
+    end)
+    -- بدلاً من TeleportService (مش دايركت فتح رابط)، الأفضل تستخدم رسائل توجيهية
+    -- لكن روبلوكس لا يدعم فتح روابط خارجية من داخل اللعبة فعلياً
+    -- لذا نكتفي بطباعة الرابط
+    print("رابط القناة: https://t.me/Prov_development")
 end)
 
 -- أزرار إظهار/إخفاء الإطارات
@@ -275,4 +283,40 @@ local function addBillboard()
     billboard.Parent = head
 
     local frame = Instance.new("Frame", billboard)
-    frame.Size = UDim2.new(1, 0
+    frame.Size = UDim2.new(1, 0, 1, 0)
+    frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    frame.BackgroundTransparency = 0.5
+    frame.BorderSizePixel = 3
+    frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+
+    local nameLabel = Instance.new("TextLabel", frame)
+    nameLabel.Size = UDim2.new(1, -10, 0.5, -5)
+    nameLabel.Position = UDim2.new(0, 5, 0, 5)
+    nameLabel.BackgroundTransparency = 1
+    nameLabel.Font = Enum.Font.GothamBold
+    nameLabel.TextSize = 18
+    nameLabel.TextColor3 = Color3.new(1, 1, 1)
+    nameLabel.TextStrokeTransparency = 0
+    nameLabel.Text = "RGPHUBX 1.0"
+
+    local bioLabel = Instance.new("TextLabel", frame)
+    bioLabel.Size = UDim2.new(1, -10, 0.5, -5)
+    bioLabel.Position = UDim2.new(0, 5, 0.5, 0)
+    bioLabel.BackgroundTransparency = 1
+    bioLabel.Font = Enum.Font.Gotham
+    bioLabel.TextSize = 14
+    bioLabel.TextColor3 = Color3.new(1, 1, 1)
+    bioLabel.TextStrokeTransparency = 0.5
+    bioLabel.Text = "المطور: ساموراي"
+
+    spawn(function()
+        while true do
+            local hue = tick() * 2
+            local color = Color3.fromHSV(hue % 1, 1, 1)
+            frame.BorderColor3 = color
+            wait(0.1)
+        end
+    end)
+end
+
+addBillboard()
