@@ -1,221 +1,278 @@
--- RGPHUBX سكربت واجهة لماب Brookhaven -- تصميم: ساموراي
+local allowedPlaceId = 4924922222
 
-if game.PlaceId ~= 4924922222 then return end
-
-pcall(function()
-	if game.CoreGui:FindFirstChild("RGPHUBX_GUI") then
-		game.CoreGui.RGPHUBX_GUI:Destroy()
-	end
-end)
-
-local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
-ScreenGui.Name = "RGPHUBX_GUI"
-
-local TweenService = game:GetService("TweenService")
-
-local ToggleButton = Instance.new("TextButton")
-ToggleButton.Size = UDim2.new(0, 50, 0, 50)
-ToggleButton.Position = UDim2.new(0, 20, 0.5, -25)
-ToggleButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-ToggleButton.Text = "☰"
-ToggleButton.TextColor3 = Color3.new(1, 1, 1)
-ToggleButton.Parent = ScreenGui
--- توهج RGB على زر التبديل
-local function rgbGlow(label)
-	coroutine.wrap(function()
-		local hue = 0
-		while true do
-			label.TextColor3 = Color3.fromHSV(hue, 1, 1)
-			hue = (hue + 0.01) % 1
-			wait(0.05)
-		end
-	end)()
-end
-rgbGlow(ToggleButton)
-
-local MainFrame = Instance.new("Frame")
-MainFrame.Size = UDim2.new(0, 300, 0, 400)
-MainFrame.Position = UDim2.new(0.5, -150, 0.5, -200)
-MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-MainFrame.Visible = false
-MainFrame.Parent = ScreenGui
-MainFrame.ClipsDescendants = true -- للتأثير الأفضل أثناء الأنيميشن
-
-local Title = Instance.new("TextLabel")
-Title.Size = UDim2.new(1, -40, 0, 40)
-Title.Position = UDim2.new(0, 10, 0, 10)
-Title.BackgroundTransparency = 1
-Title.Text = "RGPHUBX"
-Title.TextColor3 = Color3.fromRGB(0, 170, 255)
-Title.TextScaled = true
-Title.Font = Enum.Font.GothamBold
-Title.TextXAlignment = Enum.TextXAlignment.Left
-Title.Parent = MainFrame
-rgbGlow(Title)
-
-local CloseBtn = Instance.new("TextButton")
-CloseBtn.Size = UDim2.new(0, 30, 0, 30)
-CloseBtn.Position = UDim2.new(1, -35, 0, 10)
-CloseBtn.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-CloseBtn.Text = "✖"
-CloseBtn.TextColor3 = Color3.new(1, 1, 1)
-CloseBtn.Font = Enum.Font.GothamBold
-CloseBtn.TextScaled = true
-CloseBtn.Parent = MainFrame
-rgbGlow(CloseBtn)
-
-local ConfirmFrame = Instance.new("Frame")
-ConfirmFrame.Size = UDim2.new(0, 250, 0, 150)
-ConfirmFrame.Position = UDim2.new(0.5, -125, 0.5, -75)
-ConfirmFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-ConfirmFrame.Visible = false
-ConfirmFrame.Parent = ScreenGui
-
-local ConfirmText = Instance.new("TextLabel")
-ConfirmText.Size = UDim2.new(1, 0, 0.6, 0)
-ConfirmText.Position = UDim2.new(0, 0, 0, 0)
-ConfirmText.BackgroundTransparency = 1
-ConfirmText.Text = "هل أنت متأكد من إغلاق السكربت؟"
-ConfirmText.TextColor3 = Color3.new(1, 1, 1)
-ConfirmText.TextScaled = true
-ConfirmText.Font = Enum.Font.GothamBold
-ConfirmText.Parent = ConfirmFrame
-rgbGlow(ConfirmText)
-
-local YesBtn = Instance.new("TextButton")
-YesBtn.Size = UDim2.new(0.45, 0, 0.3, 0)
-YesBtn.Position = UDim2.new(0.05, 0, 0.65, 0)
-YesBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
-YesBtn.Text = "نعم"
-YesBtn.TextColor3 = Color3.new(1, 1, 1)
-YesBtn.Font = Enum.Font.GothamBold
-YesBtn.TextScaled = true
-YesBtn.Parent = ConfirmFrame
-rgbGlow(YesBtn)
-
-local NoBtn = Instance.new("TextButton")
-NoBtn.Size = UDim2.new(0.45, 0, 0.3, 0)
-NoBtn.Position = UDim2.new(0.5, 0, 0.65, 0)
-NoBtn.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
-NoBtn.Text = "لا"
-NoBtn.TextColor3 = Color3.new(1, 1, 1)
-NoBtn.Font = Enum.Font.GothamBold
-NoBtn.TextScaled = true
-NoBtn.Parent = ConfirmFrame
-rgbGlow(NoBtn)
-
-local Credit = Instance.new("ImageLabel")
-Credit.Size = UDim2.new(0, 100, 0, 100)
-Credit.Position = UDim2.new(1, -110, 0, 10)
-Credit.BackgroundTransparency = 1
-Credit.Image = "rbxthumb://type=Asset&id=110378315726633&w=420&h=420"
-Credit.Parent = MainFrame
-
-local SideButtonsFrame = Instance.new("Frame")
-SideButtonsFrame.Size = UDim2.new(0, 100, 1, -60)
-SideButtonsFrame.Position = UDim2.new(0, 0, 0, 50)
-SideButtonsFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-SideButtonsFrame.Parent = MainFrame
-
-local ContentFrame = Instance.new("Frame")
-ContentFrame.Size = UDim2.new(1, -100, 1, -60)
-ContentFrame.Position = UDim2.new(0, 100, 0, 50)
-ContentFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-ContentFrame.Parent = MainFrame
-
-local function createSideButton(text)
-	local btn = Instance.new("TextButton")
-	btn.Size = UDim2.new(1, -20, 0, 40)
-	btn.Position = UDim2.new(0, 10, 0, 0)
-	btn.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-	btn.Text = text
-	btn.Font = Enum.Font.GothamBold
-	btn.TextScaled = true
-	btn.TextColor3 = Color3.new(1, 1, 1)
-	btn.Parent = SideButtonsFrame
-	rgbGlow(btn)
-	return btn
+if game.PlaceId ~= allowedPlaceId then
+    warn("هذا السكربت يعمل فقط في لعبة بروك هافن!")
+    return
 end
 
-local UIListLayout = Instance.new("UIListLayout")
-UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-UIListLayout.Padding = UDim.new(0, 5)
-UIListLayout.Parent = SideButtonsFrame
+local player = game.Players.LocalPlayer
+local RunService = game:GetService("RunService")
 
-local rightsBtn = createSideButton("الحقوق")
-local scriptsBtn = createSideButton("سكربتات")
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "RGPHUBX_UI"
 
-local function showRightsContent()
-	ContentFrame:ClearAllChildren()
-
-	local img = Instance.new("ImageLabel")
-	img.Size = UDim2.new(0, 100, 0, 100)
-	img.Position = UDim2.new(0.5, -50, 0, 10)
-	img.BackgroundTransparency = 1
-	img.Image = "rbxthumb://type=Asset&id=110378315726633&w=420&h=420"
-	img.Parent = ContentFrame
-
-	local label = Instance.new("TextLabel")
-	label.Size = UDim2.new(1, -20, 0, 60)
-	label.Position = UDim2.new(0, 10, 0, 120)
-	label.BackgroundTransparency = 1
-	label.Text = "1️⃣ جميع الحقوق محفوظة\n2️⃣ مصنوع بواسطة: Prov_development@"
-	label.Font = Enum.Font.GothamBold
-	label.TextScaled = true
-	label.TextWrapped = true
-	rgbGlow(label)
-	label.Parent = ContentFrame
+-- وظيفة ألوان RGB متدرجة
+local function rainbow()
+    local t = tick() * 2
+    return Color3.fromHSV(t % 1, 1, 1)
 end
 
-local function showScriptsContent()
-	ContentFrame:ClearAllChildren()
+-- زر القفل / الفتح
+local toggle = Instance.new("ImageButton", gui)
+toggle.Size = UDim2.new(0, 50, 0, 50)
+toggle.Position = UDim2.new(0, 10, 0, 10)
+toggle.Image = "rbxassetid://88122625843089"
+toggle.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+toggle.BorderSizePixel = 3
+toggle.AutoButtonColor = false
 
-	local label = Instance.new("TextLabel")
-	label.Size = UDim2.new(1, -20, 0, 40)
-	label.Position = UDim2.new(0, 10, 0, 10)
-	label.BackgroundTransparency = 1
-	label.Text = "🛠️ التطوير قريباً..."
-	label.Font = Enum.Font.GothamBold
-	label.TextScaled = true
-	label.TextColor3 = Color3.fromRGB(255, 255, 255)
-	rgbGlow(label)
-	label.Parent = ContentFrame
+spawn(function()
+    while true do
+        toggle.BorderColor3 = rainbow()
+        wait(0.1)
+    end
+end)
+
+-- إطار خارجي (RGB) حول القائمة
+local borderFrame = Instance.new("Frame", gui)
+borderFrame.Name = "BorderFrame"
+borderFrame.Size = UDim2.new(0, 254, 0, 404)  -- أكبر من القائمة بـ4 بكسل لكل جانب
+borderFrame.Position = UDim2.new(0, 68, 0, 48) -- 2 بكسل فوق ويسار القائمة
+borderFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+borderFrame.BorderSizePixel = 0
+
+spawn(function()
+    while true do
+        borderFrame.BackgroundColor3 = rainbow()
+        wait(0.1)
+    end
+end)
+
+-- القائمة الرئيسية (مستطيل طولي) بدون إطار داخلي
+local main = Instance.new("Frame", gui)
+main.Name = "MainMenu"
+main.Size = UDim2.new(0, 250, 0, 400)
+main.Position = UDim2.new(0, 70, 0, 50)
+main.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+main.BorderSizePixel = 0
+main.Visible = false
+main.ZIndex = borderFrame.ZIndex + 1
+
+-- اسم السكربت فوق القائمة (خارج main)
+local scriptNameLabel = Instance.new("TextLabel", gui)
+scriptNameLabel.Size = UDim2.new(0, 250, 0, 40)
+scriptNameLabel.Position = UDim2.new(0, 70, 0, 10)
+scriptNameLabel.BackgroundTransparency = 1
+scriptNameLabel.Font = Enum.Font.GothamBold
+scriptNameLabel.TextSize = 28
+scriptNameLabel.Text = "RGPHUBX 1.0"
+scriptNameLabel.TextColor3 = Color3.new(1,1,1)
+scriptNameLabel.TextStrokeTransparency = 0
+
+spawn(function()
+    while true do
+        scriptNameLabel.TextColor3 = rainbow()
+        wait(0.1)
+    end
+end)
+
+-- دالة لتفعيل تأثير RGB على الأزرار (نص وحدود)
+local function setupButtonRGB(button)
+    spawn(function()
+        while true do
+            local c = rainbow()
+            button.BorderColor3 = c
+            button.TextColor3 = c
+            wait(0.1)
+        end
+    end)
 end
 
-rightsBtn.MouseButton1Click:Connect(showRightsContent)
-scriptsBtn.MouseButton1Click:Connect(showScriptsContent)
+-- زر معلومات اللاعب داخل القائمة
+local infoBtn = Instance.new("TextButton", main)
+infoBtn.Size = UDim2.new(0, 200, 0, 40)
+infoBtn.Position = UDim2.new(0, 25, 0, 60)
+infoBtn.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+infoBtn.BorderSizePixel = 3
+infoBtn.Font = Enum.Font.GothamBold
+infoBtn.TextSize = 20
+infoBtn.Text = "معلومات اللاعب"
+infoBtn.TextColor3 = Color3.new(1,1,1)
+infoBtn.TextStrokeTransparency = 0
+infoBtn.AutoButtonColor = false
 
-local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+setupButtonRGB(infoBtn)
 
-ToggleButton.MouseButton1Click:Connect(function()
-	if MainFrame.Visible then
-		local tweenOut = TweenService:Create(MainFrame, tweenInfo, {Size = UDim2.new(0, 300, 0, 0)})
-		tweenOut:Play()
-		tweenOut.Completed:Wait()
-		MainFrame.Visible = false
-	else
-		MainFrame.Size = UDim2.new(0, 300, 0, 0)
-		MainFrame.Visible = true
-		local tweenIn = TweenService:Create(MainFrame, tweenInfo, {Size = UDim2.new(0, 300, 0, 400)})
-		tweenIn:Play()
-		showRightsContent()
+-- زر الحقوق داخل القائمة
+local rightsBtn = Instance.new("TextButton", main)
+rightsBtn.Size = UDim2.new(0, 200, 0, 40)
+rightsBtn.Position = UDim2.new(0, 25, 0, 110)
+rightsBtn.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+rightsBtn.BorderSizePixel = 3
+rightsBtn.Font = Enum.Font.GothamBold
+rightsBtn.TextSize = 20
+rightsBtn.Text = "الحقوق"
+rightsBtn.TextColor3 = Color3.new(1,1,1)
+rightsBtn.TextStrokeTransparency = 0
+rightsBtn.AutoButtonColor = false
 
-		local player = game.Players.LocalPlayer
-		if player then
-			game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("تم تفعيل سكربت ساموراي بنجاح", "All")
-		end
-	end
+setupButtonRGB(rightsBtn)
+
+-- بطاقة معلومات اللاعب (مخفية بالافتراض)
+local infoFrame = Instance.new("Frame", main)
+infoFrame.Size = UDim2.new(1, -20, 0, 200)
+infoFrame.Position = UDim2.new(0, 10, 0, 160)
+infoFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+infoFrame.BorderSizePixel = 3
+infoFrame.Visible = false
+
+spawn(function()
+    while true do
+        infoFrame.BorderColor3 = rainbow()
+        wait(0.1)
+    end
 end)
 
-CloseBtn.MouseButton1Click:Connect(function()
-	ConfirmFrame.Visible = true
+-- إطار الحقوق (مخفية بالافتراض)
+local rightsFrame = Instance.new("Frame", main)
+rightsFrame.Size = UDim2.new(1, -20, 0, 120)
+rightsFrame.Position = UDim2.new(0, 10, 0, 370)
+rightsFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+rightsFrame.BorderSizePixel = 3
+rightsFrame.Visible = false
+
+spawn(function()
+    while true do
+        rightsFrame.BorderColor3 = rainbow()
+        wait(0.1)
+    end
 end)
 
-YesBtn.MouseButton1Click:Connect(function()
-	ScreenGui:Destroy()
-	ConfirmFrame:Destroy()
+-- نصوص معلومات اللاعب
+local thumbUrl = game.Players:GetUserThumbnailAsync(player.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size100x100)
+local playerImage = Instance.new("ImageLabel", infoFrame)
+playerImage.Size = UDim2.new(0, 100, 0, 100)
+playerImage.Position = UDim2.new(0, 10, 0, 10)
+playerImage.BackgroundTransparency = 1
+playerImage.Image = thumbUrl
+playerImage.ScaleType = Enum.ScaleType.Fit
+playerImage.BorderSizePixel = 2
+playerImage.BorderColor3 = Color3.new(1,1,1)
+
+local function createInfoText(parent, posY, text)
+    local label = Instance.new("TextLabel", parent)
+    label.Size = UDim2.new(1, -120, 0, 25)
+    label.Position = UDim2.new(0, 120, 0, posY)
+    label.BackgroundTransparency = 1
+    label.Font = Enum.Font.Gotham
+    label.TextSize = 18
+    label.Text = text
+    label.TextColor3 = Color3.new(1,1,1)
+    label.TextStrokeTransparency = 0
+    return label
+end
+
+local nameLabel = createInfoText(infoFrame, 10, "الاسم: " .. player.Name)
+local idLabel = createInfoText(infoFrame, 40, "UserId: " .. player.UserId)
+local joinLabel = createInfoText(infoFrame, 70, "Joined: منذ " .. tostring(player.AccountAge) .. " يوم")
+local pingLabel = createInfoText(infoFrame, 100, "Ping (تقريبي): ...")
+local fpsLabel = createInfoText(infoFrame, 130, "FPS: ...")
+
+spawn(function()
+    local lastTime = tick()
+    local frameCount = 0
+    local pingApprox = 0
+
+    RunService.RenderStepped:Connect(function()
+        frameCount += 1
+        local currentTime = tick()
+        local delta = currentTime - lastTime
+        if delta >= 1 then
+            local fps = math.floor(frameCount / delta)
+            fpsLabel.Text = "FPS: " .. tostring(fps)
+            pingApprox = math.floor(delta * 1000)
+            pingLabel.Text = "Ping (تقريبي): " .. tostring(pingApprox) .. " ms"
+            lastTime = currentTime
+            frameCount = 0
+        end
+    end)
 end)
 
-NoBtn.MouseButton1Click:Connect(function()
-	ConfirmFrame.Visible = false
+spawn(function()
+    while true do
+        local c = rainbow()
+        nameLabel.TextColor3 = c
+        idLabel.TextColor3 = c
+        joinLabel.TextColor3 = c
+        pingLabel.TextColor3 = c
+        fpsLabel.TextColor3 = c
+        wait(0.1)
+    end
 end)
+
+-- نص حقوق القناة داخل الإطار
+local rightsText = Instance.new("TextLabel", rightsFrame)
+rightsText.Size = UDim2.new(1, -20, 0, 80)
+rightsText.Position = UDim2.new(0, 10, 0, 10)
+rightsText.BackgroundTransparency = 1
+rightsText.TextColor3 = Color3.new(1,1,1)
+rightsText.Font = Enum.Font.Gotham
+rightsText.TextSize = 16
+rightsText.TextWrapped = true
+rightsText.Text = [[
+رابط القناة:
+https://t.me/Prov_development
+
+اضغط زر "جوين" للانضمام!
+]]
+
+-- زر جوين يفتح رابط التليجرام
+local joinBtn = Instance.new("TextButton", rightsFrame)
+joinBtn.Size = UDim2.new(0, 100, 0, 30)
+joinBtn.Position = UDim2.new(0.5, -50, 0, 100)
+joinBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+joinBtn.BorderSizePixel = 0
+joinBtn.Font = Enum.Font.GothamBold
+joinBtn.TextSize = 18
+joinBtn.Text = "جوين"
+joinBtn.TextColor3 = Color3.new(1,1,1)
+joinBtn.AutoButtonColor = true
+
+joinBtn.MouseButton1Click:Connect(function()
+    print("فتح رابط القناة: https://t.me/Prov_development")
+end)
+
+-- أزرار إظهار/إخفاء الإطارات
+infoBtn.MouseButton1Click:Connect(function()
+    infoFrame.Visible = not infoFrame.Visible
+    rightsFrame.Visible = false
+end)
+
+rightsBtn.MouseButton1Click:Connect(function()
+    rightsFrame.Visible = not rightsFrame.Visible
+    infoFrame.Visible = false
+end)
+
+-- زر القفل لفتح وإغلاق القائمة
+toggle.MouseButton1Click:Connect(function()
+    main.Visible = not main.Visible
+    if not main.Visible then
+        infoFrame.Visible = false
+        rightsFrame.Visible = false
+    end
+end)
+
+-- إضافة BillboardGui فوق رأس اللاعب
+local character = player.Character or player.CharacterAdded:Wait()
+local head = character:WaitForChild("Head")
+
+local function addBillboard()
+    local billboard = Instance.new("BillboardGui")
+    billboard.Adornee = head
+    billboard.Size = UDim2.new(0, 200, 0, 50)
+    billboard.StudsOffset = Vector3.new(0, 2.5, 0)
+    billboard.AlwaysOnTop = true
+    billboard.Parent = head
+
+    local frame = Instance.new("Frame", billboard)
+    frame.Size = UDim2.new(1, 0
