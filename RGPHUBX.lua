@@ -11,13 +11,15 @@ local RunService = game:GetService("RunService")
 local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
 gui.Name = "RGPHUBX_UI"
 
+local scriptActivated = false  -- هل السكربت شغال؟
+
 -- وظيفة ألوان RGB متدرجة
 local function rainbow()
     local t = tick() * 2
     return Color3.fromHSV(t % 1, 1, 1)
 end
 
--- زر القفل / الفتح
+-- زر القفل / الفتح (Toggle)
 local toggle = Instance.new("ImageButton", gui)
 toggle.Size = UDim2.new(0, 50, 0, 50)
 toggle.Position = UDim2.new(0, 10, 0, 10)
@@ -36,8 +38,8 @@ end)
 -- إطار خارجي (RGB) حول القائمة
 local borderFrame = Instance.new("Frame", gui)
 borderFrame.Name = "BorderFrame"
-borderFrame.Size = UDim2.new(0, 254, 0, 404)  -- أكبر من القائمة بـ4 بكسل لكل جانب
-borderFrame.Position = UDim2.new(0, 68, 0, 48) -- 2 بكسل فوق ويسار القائمة
+borderFrame.Size = UDim2.new(1, -140, 0, 400)  -- تقريبًا يغطي العرض عشان القائمة عريضة
+borderFrame.Position = UDim2.new(0, 70, 0, 50)
 borderFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 borderFrame.BorderSizePixel = 0
 
@@ -48,10 +50,10 @@ spawn(function()
     end
 end)
 
--- القائمة الرئيسية (مستطيل طولي) بدون إطار داخلي
+-- القائمة الرئيسية (مستطيل عرضي)
 local main = Instance.new("Frame", gui)
 main.Name = "MainMenu"
-main.Size = UDim2.new(0, 250, 0, 400)
+main.Size = UDim2.new(1, -150, 0, 400) -- عرض تقريبًا مثل الشاشة مع هامش 150 بكسل (زر الصورة + هامش)
 main.Position = UDim2.new(0, 70, 0, 50)
 main.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 main.BorderSizePixel = 0
@@ -60,7 +62,7 @@ main.ZIndex = borderFrame.ZIndex + 1
 
 -- اسم السكربت فوق القائمة (خارج main)
 local scriptNameLabel = Instance.new("TextLabel", gui)
-scriptNameLabel.Size = UDim2.new(0, 250, 0, 40)
+scriptNameLabel.Size = UDim2.new(1, -150, 0, 40)
 scriptNameLabel.Position = UDim2.new(0, 70, 0, 10)
 scriptNameLabel.BackgroundTransparency = 1
 scriptNameLabel.Font = Enum.Font.GothamBold
@@ -97,7 +99,6 @@ infoBtn.BorderSizePixel = 3
 infoBtn.Font = Enum.Font.GothamBold
 infoBtn.TextSize = 20
 infoBtn.Text = "معلومات اللاعب"
-infoBtn.TextColor3 = Color3.new(1,1,1)
 infoBtn.TextStrokeTransparency = 0
 infoBtn.AutoButtonColor = false
 
@@ -106,22 +107,35 @@ setupButtonRGB(infoBtn)
 -- زر الحقوق داخل القائمة
 local rightsBtn = Instance.new("TextButton", main)
 rightsBtn.Size = UDim2.new(0, 200, 0, 40)
-rightsBtn.Position = UDim2.new(0, 25, 0, 110)
+rightsBtn.Position = UDim2.new(0, 240, 0, 60)  -- على يمين زر معلومات اللاعب
 rightsBtn.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 rightsBtn.BorderSizePixel = 3
 rightsBtn.Font = Enum.Font.GothamBold
 rightsBtn.TextSize = 20
 rightsBtn.Text = "الحقوق"
-rightsBtn.TextColor3 = Color3.new(1,1,1)
 rightsBtn.TextStrokeTransparency = 0
 rightsBtn.AutoButtonColor = false
 
 setupButtonRGB(rightsBtn)
 
+-- زر خروج يغلق السكربت (يوقف عمل الواجهة نهائي)
+local exitBtn = Instance.new("TextButton", main)
+exitBtn.Size = UDim2.new(0, 100, 0, 40)
+exitBtn.Position = UDim2.new(1, -110, 0, 10) -- فوق يمين القائمة
+exitBtn.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+exitBtn.BorderSizePixel = 3
+exitBtn.Font = Enum.Font.GothamBold
+exitBtn.TextSize = 20
+exitBtn.Text = "خروج"
+exitBtn.TextStrokeTransparency = 0
+exitBtn.AutoButtonColor = false
+
+setupButtonRGB(exitBtn)
+
 -- بطاقة معلومات اللاعب (مخفية بالافتراض)
 local infoFrame = Instance.new("Frame", main)
-infoFrame.Size = UDim2.new(1, -20, 0, 200)
-infoFrame.Position = UDim2.new(0, 10, 0, 160)
+infoFrame.Size = UDim2.new(0.45, -20, 0, 300)
+infoFrame.Position = UDim2.new(0, 10, 0, 110)
 infoFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 infoFrame.BorderSizePixel = 3
 infoFrame.Visible = false
@@ -133,10 +147,10 @@ spawn(function()
     end
 end)
 
--- إطار الحقوق (مخفية بالافتراض)
+-- إطار الحقوق (مخفي افتراضياً)
 local rightsFrame = Instance.new("Frame", main)
-rightsFrame.Size = UDim2.new(1, -20, 0, 120)
-rightsFrame.Position = UDim2.new(0, 10, 0, 370)
+rightsFrame.Size = UDim2.new(0.45, -20, 0, 300)
+rightsFrame.Position = UDim2.new(0.5, 10, 0, 110)
 rightsFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 rightsFrame.BorderSizePixel = 3
 rightsFrame.Visible = false
@@ -212,7 +226,7 @@ end)
 
 -- نص حقوق القناة داخل الإطار
 local rightsText = Instance.new("TextLabel", rightsFrame)
-rightsText.Size = UDim2.new(1, -20, 0, 80)
+rightsText.Size = UDim2.new(1, -20, 0, 200)
 rightsText.Position = UDim2.new(0, 10, 0, 10)
 rightsText.BackgroundTransparency = 1
 rightsText.TextColor3 = Color3.new(1,1,1)
@@ -226,10 +240,10 @@ https://t.me/Prov_development
 اضغط زر "جوين" للانضمام!
 ]]
 
--- زر جوين يفتح رابط التليجرام
+-- زر جوين داخل حقوق
 local joinBtn = Instance.new("TextButton", rightsFrame)
 joinBtn.Size = UDim2.new(0, 100, 0, 30)
-joinBtn.Position = UDim2.new(0.5, -50, 0, 100)
+joinBtn.Position = UDim2.new(0.5, -50, 1, -40)
 joinBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
 joinBtn.BorderSizePixel = 0
 joinBtn.Font = Enum.Font.GothamBold
@@ -239,84 +253,55 @@ joinBtn.TextColor3 = Color3.new(1,1,1)
 joinBtn.AutoButtonColor = true
 
 joinBtn.MouseButton1Click:Connect(function()
-    -- فتح الرابط في المتصفح (إذا دعمها المستخدم)
-    local HttpService = game:GetService("HttpService")
-    local success, result = pcall(function()
-        return game:GetService("TeleportService"):TeleportToPlaceInstance(0, "", player)
-    end)
-    -- بدلاً من TeleportService (مش دايركت فتح رابط)، الأفضل تستخدم رسائل توجيهية
-    -- لكن روبلوكس لا يدعم فتح روابط خارجية من داخل اللعبة فعلياً
-    -- لذا نكتفي بطباعة الرابط
     print("رابط القناة: https://t.me/Prov_development")
 end)
 
 -- أزرار إظهار/إخفاء الإطارات
 infoBtn.MouseButton1Click:Connect(function()
     infoFrame.Visible = not infoFrame.Visible
-    rightsFrame.Visible = false
-end)
-
-rightsBtn.MouseButton1Click:Connect(function()
-    rightsFrame.Visible = not rightsFrame.Visible
-    infoFrame.Visible = false
-end)
-
--- زر القفل لفتح وإغلاق القائمة
-toggle.MouseButton1Click:Connect(function()
-    main.Visible = not main.Visible
-    if not main.Visible then
-        infoFrame.Visible = false
+    if infoFrame.Visible then
         rightsFrame.Visible = false
     end
 end)
 
--- إضافة BillboardGui فوق رأس اللاعب
-local character = player.Character or player.CharacterAdded:Wait()
-local head = character:WaitForChild("Head")
+rightsBtn.MouseButton1Click:Connect(function()
+    rightsFrame.Visible = not rightsFrame.Visible
+    if rightsFrame.Visible then
+        infoFrame.Visible = false
+    end
+end)
 
-local function addBillboard()
-    local billboard = Instance.new("BillboardGui")
-    billboard.Adornee = head
-    billboard.Size = UDim2.new(0, 200, 0, 50)
-    billboard.StudsOffset = Vector3.new(0, 2.5, 0)
-    billboard.AlwaysOnTop = true
-    billboard.Parent = head
+-- زر خروج يغلق السكربت
+exitBtn.MouseButton1Click:Connect(function()
+    main.Visible = false
+    infoFrame.Visible = false
+    rightsFrame.Visible = false
+    scriptActivated = false
+    -- تعطيل زر التoggle لمنع فتح الواجهة بعد الخروج
+    toggle.Active = false
+    toggle.AutoButtonColor = false
+    toggle.ImageTransparency = 0.5
+    -- رسالة خروج للشات
+    player:Kick("تم خروجك من سكربت RGPHUBX") -- أو تقدر تحط أي فعل ثاني بدل الطرد
+end)
 
-    local frame = Instance.new("Frame", billboard)
-    frame.Size = UDim2.new(1, 0, 1, 0)
-    frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    frame.BackgroundTransparency = 0.5
-    frame.BorderSizePixel = 3
-    frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+-- تعديل وظيفة زر التoggle: يفتح القائمة فقط إذا السكربت مفعل
+toggle.MouseButton1Click:Connect(function()
+    if scriptActivated then
+        main.Visible = not main.Visible
+    end
+end)
 
-    local nameLabel = Instance.new("TextLabel", frame)
-    nameLabel.Size = UDim2.new(1, -10, 0.5, -5)
-    nameLabel.Position = UDim2.new(0, 5, 0, 5)
-    nameLabel.BackgroundTransparency = 1
-    nameLabel.Font = Enum.Font.GothamBold
-    nameLabel.TextSize = 18
-    nameLabel.TextColor3 = Color3.new(1, 1, 1)
-    nameLabel.TextStrokeTransparency = 0
-    nameLabel.Text = "RGPHUBX 1.0"
+-- عند بداية تفعيل السكربت
+scriptActivated = true
+main.Visible = true
 
-    local bioLabel = Instance.new("TextLabel", frame)
-    bioLabel.Size = UDim2.new(1, -10, 0.5, -5)
-    bioLabel.Position = UDim2.new(0, 5, 0.5, 0)
-    bioLabel.BackgroundTransparency = 1
-    bioLabel.Font = Enum.Font.Gotham
-    bioLabel.TextSize = 14
-    bioLabel.TextColor3 = Color3.new(1, 1, 1)
-    bioLabel.TextStrokeTransparency = 0.5
-    bioLabel.Text = "المطور: ساموراي"
+-- رسالة في الشات تلقائية عند التفعيل
+game:GetService("StarterGui"):SetCore("ChatMakeSystemMessage", {
+    Text = "تم تفعيل سكربت RGPHUBX 1.0 المطور ساموراي ✅";
+    Color = Color3.new(0,1,0);
+    Font = Enum.Font.SourceSansBold;
+    FontSize = Enum.FontSize.Size24;
+})
 
-    spawn(function()
-        while true do
-            local hue = tick() * 2
-            local color = Color3.fromHSV(hue % 1, 1, 1)
-            frame.BorderColor3 = color
-            wait(0.1)
-        end
-    end)
-end
-
-addBillboard()
+-- حذف اسم السكربت والمطور فوق رأس اللاعب (ما أضفتها بناءً على طلبك)
