@@ -1,4 +1,4 @@
-shared.LoaderTitle = "جارٍ تحميل سكربت كـلان D M C"
+shared.LoaderTitle  "جارٍ تحميل سكربت المطور ساموراي"
 shared.LoaderKeyFrames = {
     [1] = {1, 20},
     [2] = {2, 50},
@@ -204,22 +204,22 @@ StarterGui:SetCore("SendNotification", {
     Duration = 5
 })
 
-ReplicatedStorage.RE["1RPNam1eTex1t"]:FireServer("RolePlayName", "سـكـربـت الـمـطـور عـرڪ")
+ReplicatedStorage.RE["1RPNam1eTex1t"]:FireServer("RolePlayName","سـكـربـت الـمـطـور ساموراي")
 ReplicatedStorage.RE["1RPNam1eColo1r"]:FireServer("PickingRPNameColor", Color3.fromRGB(7, 167, 0))
 ReplicatedStorage.RE["1RPNam1eTex1t"]:FireServer("RolePlayBio", "-SCRIPT DMC V0.3")
 ReplicatedStorage.RE["1RPNam1eColo1r"]:FireServer("PickingRPBioColor", Color3.fromRGB(0, 0, 255))
 
 StarterGui:SetCore("SendNotification", {
     Title = "لاتنسى تشوف الحقوق",
-    Text = "يوزري تيك @dmc_ark",
+    Text = "يوزري تيك قريباً",
     Duration = 5
 })
 
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/mhmdsx/ui-TKX/refs/heads/main/ui%20TKX.txt")))()
 MakeWindow({
 Hub = {
-Title = "Clan DMC|مـطور DmC_عـرڪ || V0.3 || Brookhaven RB",
-Animation = "سكربت DMC HUB"
+Title = "hup |مـطور ساموراي || V0.3 || Brookhaven RB",
+Animation = "سكربت Chemistry HUB"
 },
 Key = {
 KeySystem = false,
@@ -246,17 +246,17 @@ StrokeColor = Color3.fromRGB(15, 15, 15)
 })
 
 local Main = MakeTab({Name = "معلومات السكربت"})
-AddImageLabel(Main, {Name = "تم تطوير السكربت بواسطة Clan DMC", Image = "rbxassetid://79216107686676"})
+AddImageLabel(Main, {Name = "تم تطوير السكربت بواسطة المطور ساموراي", Image = "rbxassetid://79216107686676"})
 
 AddSection(Main, {"روابط التليجرام"})
-AddButton(Main, {Name = "انسخ رابط قناة المطور", Callback = function() setclipboard('https://t.me/DMC_HUP') end})
+AddButton(Main, {Name = "انسخ رابط قناة المطور", Callback = function() setclipboard('https://t.me/Prov_development') end})
 
 AddSection(Main, {"يوزرات تيك توك"})
 
 AddButton(Main, {
     Name = "انسخ يوزري تيك", 
     Callback = function()
-        setclipboard('dmc_ark')
+        setclipboard('قريباً')
     end
 })
 
@@ -288,28 +288,7 @@ AddSection(Main, {"روبلوكس"})
 AddButton(Main, {
     Name = "يوزري بروبلوكس",
     Callback = function()
-        setclipboard('Rio_Y313')
-    end
-})
-
-AddButton(Main, {
-    Name = "يـوزر صـاحـبي ربـلوڪـس سـنـيـڪ",
-    Callback = function()
-        setclipboard('J500ff')
-    end
-})
-
-AddButton(Main, {
-    Name = "يـوزر صـاحـبي ربـلوڪـس سـنـيـڪ ²",
-    Callback = function()
-        setclipboard('0JLM7')
-    end
-})
-
-AddButton(Main, {
-    Name = "يـوزر صـاحـبي ربـلوڪـس دمـار",
-    Callback = function()
-        setclipboard('noob2pro_gg9')
+        setclipboard('lduwgxbf')
     end
 })
 
