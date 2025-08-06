@@ -297,18 +297,35 @@ AddImageLabel(Main, {
 })
 AddSection(Main, {"روابط التليجرام"})
 AddButton(Main, {
-  Name = "انسخ رابط قناDMCة في التليجرام",
+  Name = "انسخ رابط قناه مطورين السكربت",
   Callback = function()
-    setclipboard('https://t.me/DMC_HUP')
+    setclipboard('https://t.me/Prov_development')
   end
 })
 
 AddSection(Main, {"يوزرات تيك توك"})
 
 AddButton(Main, {
-  Name = "انسخ يوزري تيك", 
+  Name = "انسخ يوزر المطور عـركـ", 
   Callback = function()
     setclipboard('dmc_ark')
+    game.StarterGui:SetCore("SendNotification", {
+      Title = "تم النسخ ✅",
+      Text = "تم نسخ يوزر عـركـ",
+      Duration = 3
+    })
+  end
+})
+
+AddButton(Main, {
+  Name = "انسخ يوزر المطور ساموراي", 
+  Callback = function()
+    setclipboard('alsamorayt')
+    game.StarterGui:SetCore("SendNotification", {
+      Title = "تم النسخ ✅",
+      Text = "تم نسخ يوزر ساموراي",
+      Duration = 3
+    })
   end
 })
 
