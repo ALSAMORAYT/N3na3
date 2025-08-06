@@ -309,27 +309,9 @@ AddButton(Main, {
   Name = "انسخ يوزر المطور عـركـ", 
   Callback = function()
     setclipboard('dmc_ark')
-    game.StarterGui:SetCore("SendNotification", {
-      Title = "تم النسخ ✅",
-      Text = "تم نسخ يوزر عـركـ",
-      Duration = 3
-    })
-  end
-})
+		})
 
-AddButton(Main, {
-  Name = "انسخ يوزر المطور ساموراي", 
-  Callback = function()
-    setclipboard('alsamorayt')
-    game.StarterGui:SetCore("SendNotification", {
-      Title = "تم النسخ ✅",
-      Text = "تم نسخ يوزر ساموراي",
-      Duration = 3
-    })
-  end
-})
-
-
+			
    
 AddSection(Main, {"روبلوكس"})
 AddButton(Main, {
