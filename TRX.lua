@@ -308,8 +308,8 @@ AddSection(Main, {"يوزرات تيك توك"})
 AddButton(Main, {
   Name = "انسخ يوزر المطور عـركـ", 
   Callback = function()
-    setclipboard('dmc_ark')
-		})
+    setclipboard('dmc_ark') 
+})
 
 			
    
