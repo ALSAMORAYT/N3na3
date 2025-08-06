@@ -257,15 +257,15 @@ game:GetService("ReplicatedStorage"):WaitForChild("RE"):WaitForChild("1RPNam1eCo
 wait(0.5)
 game.StarterGui:SetCore("SendNotification", {
     Title = "لاتنسى تشوف الحقوق";
-    Text = "يوزري تيك @dmc_ark"; -- ARAB TEAM
+    Text = "يوزراتنا تيك @dmc_ark و @alsamorayt";
     Duration = 5;
 })
 
 loadstring(game:HttpGet(("https://raw.githubusercontent.com/mhmdsx/ui-TKX/refs/heads/main/ui%20TKX.txt")))()
 MakeWindow({
 Hub = {
-Title = "Clan HUB || V0.3 || Brookhaven RB",
-Animation = "سكربت DMC HUB"
+  Title = "Xploit HUB  V0.1  Brookhaven RB",
+  Animation = "سكربت Xploit HUB"
 },
 Key = {
 KeySystem = false,
