@@ -292,7 +292,7 @@ StrokeColor = Color3.fromRGB(15, 15, 15)
 })
 local Main = MakeTab({Name = "معلومات السكربت"})
 AddImageLabel(Main, {
-  Name = "تم تطوير السكربت بواسطة عـرڪ",
+  Name = "تم تطوير السكربت بواسطة ساموراي و عـرڪ",
   Image = "rbxassetid://95595481924491"
 })
 AddSection(Main, {"روابط التليجرام"})
