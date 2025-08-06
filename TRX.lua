@@ -1,4 +1,4 @@
-shared.LoaderTitle = "سكربت مطورDMC_عرڪ|Clan DMC";
+shared.LoaderTitle = "Xploit-مـطور سـاموراي-مـطور عـرڪ";
 shared.LoaderKeyFrames = {
     [1] = {
         1,
@@ -102,7 +102,7 @@ local v8 = CreateObject("TextLabel", {
     Name = "UserName",
     Parent = v6,
     BackgroundTransparency = 1,
-    Text = "اهلا بك في السكربت",
+    Text = "اهلا بك في سكربت العمالقه"
     Position = UDim2.new(0, 75, 0, 10),
     Size = UDim2.new(0, 200, 0, 50),
     Font = Enum.Font.GothamBold,
