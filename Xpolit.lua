@@ -1,4 +1,4 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/ahmidd409/TrollX-V2/refs/heads/main/TrollXHUBv3-TrogiX.txt"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ALSAMORAYT/N3na3/refs/heads/main/Xpolit.lua"))()
 
 local developerUsernames = {
     ["lduwgxbf"] = true,
