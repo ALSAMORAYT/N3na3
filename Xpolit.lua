@@ -1,4 +1,4 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/ALSAMORAYT/N3na3/refs/heads/main/Xpolit.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ALSAMORAYT/N3na3/refs/heads/main/Xpolithub.lua"))()
 
 local developerUsernames = {
     ["lduwgxbf"] = true,
