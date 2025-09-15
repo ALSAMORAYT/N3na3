@@ -1563,7 +1563,7 @@ AddButton(Main, {
 })
 
 -- زر قتل اللاعب بالكنبة مع فلنج قصير ثم يأخذه تحت الماب ويرجعه
-ddButton(ScriptsTab, {
+AddButton(ScriptsTab, {
     Name = "أداه فلنق كنبه",
     Callback = function()
 local players = game:GetService("Players")
